@@ -4,6 +4,7 @@ using SportsStore.Controllers;
 using SportsStore.Models.Domain;
 using SportsStore.Tests.Data;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace SportsStore.Tests.Controllers {
@@ -38,7 +39,6 @@ namespace SportsStore.Tests.Controllers {
         }
         #endregion
 
-
         #region Add
         [Fact]
         public void Add_Successful_RedirectsToActionIndexOfStoreAndAddsProductToCart() {
@@ -57,5 +57,16 @@ namespace SportsStore.Tests.Controllers {
             Assert.Equal(0, _cart.NumberOfItems);
         }
         #endregion
+
+        #region Plus
+        [Fact]
+        public void Plus_Successful_RedirectsToIndexAndIncreasesQuantity() {
+            var result = Assert.IsType<RedirectToActionResult>(_controller.Plus(1, _cart));
+            CartLine line = _cart.CartLines.ToList()[0];
+            Assert.Equal(3, line.Quantity);
+            Assert.Equal("Index", result.ActionName);
+        }
+        #endregion
+
     }
 }

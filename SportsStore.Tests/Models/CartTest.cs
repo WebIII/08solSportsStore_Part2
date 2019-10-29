@@ -89,5 +89,21 @@ namespace SportsStore.Tests.Models {
             Assert.Equal(0, _cart.TotalValue);
         }
         #endregion
+
+        #region IncreaseQuantity
+        [Fact]
+        public void IncreaseQuantity_ExistingLine_IncreasesQuantity() {
+            _cart.AddLine(_p1, 10);
+            _cart.IncreaseQuantity(_p1.ProductId);
+            Assert.Equal(11, _cart.CartLines.FirstOrDefault(l => l.Product.Equals(_p1))?.Quantity);
+        }
+
+        [Fact]
+        public void IncreaseQuantity_NonExistingLine_ThrowsArgumentException() {
+            _cart.AddLine(_p1, 10);
+            Assert.Throws<ArgumentException>(() => _cart.IncreaseQuantity(2000));
+        }
+        #endregion
+
     }
 }
