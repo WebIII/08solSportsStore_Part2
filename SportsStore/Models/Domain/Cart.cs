@@ -45,6 +45,16 @@ namespace SportsStore.Models.Domain {
             line.Quantity++;
         }
 
+        public void DecreaseQuantity(int productId) {
+            CartLine line = GetCartLine(productId);
+            if (line == null)
+                throw new ArgumentException("Product not in cart");
+            if (line.Quantity == 1)
+                _lines.Remove(line);
+            else
+                line.Quantity--;
+        }
+
         private CartLine GetCartLine(int productId) {
             return _lines.SingleOrDefault(l => l.Product.ProductId == productId);
         }

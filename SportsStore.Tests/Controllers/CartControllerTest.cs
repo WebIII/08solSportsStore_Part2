@@ -68,5 +68,15 @@ namespace SportsStore.Tests.Controllers {
         }
         #endregion
 
+        #region Min
+        [Fact]
+        public void Min_Successful_RedirectsToIndexAndDecreasesQuantity() {
+            var result = Assert.IsType<RedirectToActionResult>(_controller.Min(1, _cart));
+            Assert.Equal("Index", result?.ActionName);
+            CartLine line = _cart.CartLines.ToList()[0];
+            Assert.Equal(1, line.Quantity);
+        }
+        #endregion
+
     }
 }

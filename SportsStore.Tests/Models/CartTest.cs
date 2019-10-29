@@ -104,6 +104,29 @@ namespace SportsStore.Tests.Models {
             Assert.Throws<ArgumentException>(() => _cart.IncreaseQuantity(2000));
         }
         #endregion
+        
+        #region DecreaseQuantity
+        [Fact]
+        public void DecreaseQuantity_ExistingLine_DecreasesQuantity() {
+            _cart.AddLine(_p1, 10);
+            _cart.DecreaseQuantity(_p1.ProductId);
+            Assert.Equal(9, _cart.CartLines.FirstOrDefault(l => l.Product.Equals(_p1))?.Quantity);
+        }
+
+        [Fact]
+        public void DecreaseQuantity_ExistingLineWithQuantity1_RemovesLine() {
+            _cart.AddLine(_p1, 1);
+            _cart.DecreaseQuantity(_p1.ProductId);
+            Assert.Empty(_cart.CartLines);
+        }
+
+        [Fact]
+        public void DecreaseQuantity_NonExistingLine_ThrowsArgumentException() {
+            _cart.AddLine(_p1, 1);
+            Assert.Throws<ArgumentException>(() => _cart.DecreaseQuantity(2000));
+        }
+
+        #endregion
 
     }
 }
