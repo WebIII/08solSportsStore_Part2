@@ -17,6 +17,10 @@ namespace SportsStore.Data.Repositories {
             return _products.AsNoTracking().ToList();
         }
 
+        public IEnumerable<Product> GetByAvailability(IEnumerable<Availability> availabilities) {
+            return _products.Where(p => availabilities.Contains(p.Availability)).OrderBy(p => p.Name).AsNoTracking().ToList();
+        }
+
         public Product GetById(int productId) {
             return _products.Include(p => p.Category).SingleOrDefault(p => p.ProductId == productId);
         }

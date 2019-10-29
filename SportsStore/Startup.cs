@@ -57,7 +57,7 @@ namespace SportsStore {
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Product}/{action=Index}/{id?}");
+                    pattern: "{controller=Store}/{action=Index}/{id?}");
             });
 
             sportsStoreDataInitializer.InitializeData();
