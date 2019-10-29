@@ -15,6 +15,7 @@ namespace SportsStore.Tests.Controllers {
             var context = new DummyApplicationDbContext();
             var productRepository = new Mock<IProductRepository>();
             productRepository.Setup(p => p.GetById(4)).Returns(context.RunningShoes);
+            productRepository.Setup(p => p.GetById(1)).Returns(context.Football);
             _controller = new CartController(productRepository.Object);
             _cart = new Cart();
             _cart.AddLine(context.Football, 2);
@@ -45,6 +46,15 @@ namespace SportsStore.Tests.Controllers {
             Assert.Equal("Index", result.ActionName);
             Assert.Equal("Store", result.ControllerName);
             Assert.Equal(2, _cart.NumberOfItems);
+        }
+        #endregion
+
+        #region Remove
+        [Fact]
+        public void Remove_Successful_RedirectsToIndexAndRemovesProductFromCart() {
+            var result = Assert.IsType<RedirectToActionResult>(_controller.Remove(1, _cart));
+            Assert.Equal("Index", result.ActionName);
+            Assert.Equal(0, _cart.NumberOfItems);
         }
         #endregion
     }
