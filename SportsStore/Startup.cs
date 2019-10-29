@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using SportsStore.Data;
 using SportsStore.Models.Domain;
 using SportsStore.Data.Repositories;
+using SportsStore.Filters;
 
 namespace SportsStore {
     public class Startup {
@@ -28,7 +29,8 @@ namespace SportsStore {
             services
                 .AddScoped<SportsStoreDataInitializer>()
                 .AddScoped<IProductRepository, ProductRepository>()
-                .AddScoped<ICategoryRepository, CategoryRepository>();
+                .AddScoped<ICategoryRepository, CategoryRepository>()
+                .AddScoped<CartSessionFilter>();
             services
                 .AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
