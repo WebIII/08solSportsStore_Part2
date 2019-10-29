@@ -6,6 +6,7 @@ using SportsStore.Controllers;
 using SportsStore.Models.Domain;
 using SportsStore.Models.ProductViewModels;
 using SportsStore.Tests.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -129,8 +130,19 @@ namespace SportsStore.Tests.Controllers {
         }
 
 
-        [Fact(Skip = "Not implemented yet...")]
+        [Fact]
         public void CreateHttpPost_InvalidProduct_DoesNotCreateNorPersistsProductAndRedirectsToActionIndex() {
+            _mockProductRepository.Setup(m => m.Add(It.IsAny<Product>()));
+            var productVm = new EditViewModel()
+            {
+                CategoryId = 1,
+                Name = "nieuw product",
+                Price = -10
+            };
+            var action = Assert.IsType<RedirectToActionResult>(_productController.Create(productVm));
+            Assert.Equal("Index", action?.ActionName);
+            _mockProductRepository.Verify(m => m.SaveChanges(), Times.Never());
+            _mockProductRepository.Verify(m => m.Add(It.IsAny<Product>()), Times.Never());
         }
 
 
@@ -161,8 +173,11 @@ namespace SportsStore.Tests.Controllers {
             _mockProductRepository.Verify(m => m.SaveChanges(), Times.Once);
         }
 
-        [Fact(Skip = "Not implemented yet...")]
+        [Fact]
         public void DeleteHttpPost_UnsuccessfullDelete_RedirectsToIndex() {
+            _mockProductRepository.Setup(p => p.GetById(1)).Throws<ArgumentException>();
+            var result = Assert.IsType<RedirectToActionResult>(_productController.DeleteConfirmed(1));        
+            Assert.Equal("Index", result?.ActionName);
         }
         #endregion
     }
