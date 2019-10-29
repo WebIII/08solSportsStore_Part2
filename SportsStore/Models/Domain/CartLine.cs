@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace SportsStore.Models.Domain {
+    [JsonObject(MemberSerialization.OptIn)]
     public class CartLine {
         #region Fields
         private int _quantity;
@@ -8,6 +10,7 @@ namespace SportsStore.Models.Domain {
         #endregion
 
         #region Properties
+        [JsonProperty]
         public Product Product {
             get => _product;
             private set {
@@ -15,6 +18,7 @@ namespace SportsStore.Models.Domain {
             }
         }
 
+        [JsonProperty]
         public int Quantity {
             get => _quantity;
             set {

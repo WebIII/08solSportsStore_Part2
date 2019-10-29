@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SportsStore.Models.Domain {
+    [JsonObject(MemberSerialization.OptIn)]
     public class Cart {
         #region Fields
+        [JsonProperty]
         private readonly IList<CartLine> _lines = new List<CartLine>();
         #endregion
 

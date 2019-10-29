@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Runtime.CompilerServices;
 
 // Make SportsStore.tests a friendly assembly so it can access the internal properties of this class
 [assembly: InternalsVisibleTo("SportsStore.Tests")]
 
 namespace SportsStore.Models.Domain {
+    [JsonObject(MemberSerialization.OptIn)]
     public class Product {
         #region Fields
         private string _name;
@@ -13,6 +15,7 @@ namespace SportsStore.Models.Domain {
         #endregion
 
         #region Properties
+        [JsonProperty]
         public int ProductId { get; internal set; }
 
         public string Name {
@@ -60,6 +63,12 @@ namespace SportsStore.Models.Domain {
         // Added for EF because EF cannot set navigation properties through constructor parameters
         private Product() {
         }
+
+        [JsonConstructor]
+        private Product(int productId) {
+            ProductId = productId;
+        }
+
         #endregion
 
         #region Methods
