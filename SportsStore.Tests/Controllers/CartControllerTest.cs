@@ -14,6 +14,7 @@ namespace SportsStore.Tests.Controllers {
         public CartControllerTest() {
             var context = new DummyApplicationDbContext();
             var productRepository = new Mock<IProductRepository>();
+            productRepository.Setup(p => p.GetById(4)).Returns(context.RunningShoes);
             _controller = new CartController(productRepository.Object);
             _cart = new Cart();
             _cart.AddLine(context.Football, 2);
@@ -33,6 +34,17 @@ namespace SportsStore.Tests.Controllers {
             var cartresult = Assert.IsAssignableFrom<IEnumerable<CartLine>>(result.Model);
             Assert.Single(cartresult);
             Assert.Equal(50M, result.ViewData["Total"]);
+        }
+        #endregion
+
+
+        #region Add
+        [Fact]
+        public void Add_Successful_RedirectsToActionIndexOfStoreAndAddsProductToCart() {
+            var result = Assert.IsType<RedirectToActionResult>(_controller.Add(4, 2, _cart));
+            Assert.Equal("Index", result.ActionName);
+            Assert.Equal("Store", result.ControllerName);
+            Assert.Equal(2, _cart.NumberOfItems);
         }
         #endregion
     }
