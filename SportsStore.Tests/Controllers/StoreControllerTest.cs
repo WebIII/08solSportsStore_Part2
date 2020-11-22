@@ -24,7 +24,7 @@ namespace SportsStore.Tests.Controllers {
             _productRepository.
                 Setup(p => p.GetByAvailability(new List<Availability> { Availability.ShopAndOnline, Availability.OnlineOnly })).
                 Returns(_dummyContext.ProductsOnline);
-            var result = Assert.IsType<ViewResult>(_storeControlller.Index());
+            var result = Assert.IsType<ViewResult>(_controller.Index());
             var model = Assert.IsAssignableFrom <IEnumerable<Product>>( result.Model);
             Assert.Equal(10, model.Count());
         }
